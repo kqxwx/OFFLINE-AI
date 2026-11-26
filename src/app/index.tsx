@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'expo-router';
 import {
   KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet,
   Text, TextInput, View, useWindowDimensions
@@ -142,7 +143,7 @@ export default function HomeScreen() {
             <Pressable style={styles.newChat} onPress={clearChat}><Text style={styles.newChatText}>＋  Новый чат</Text></Pressable>
             <Text style={styles.sideLabel}>РАБОЧЕЕ ПРОСТРАНСТВО</Text>
             <View style={styles.sideItemActive}><Text style={styles.sideItemTextActive}>◫  Диалог</Text></View>
-            <View style={styles.sideItem}><Text style={styles.sideItemText}>▤  Локальная память</Text></View>
+            <Link href="/explore" asChild><Pressable style={styles.sideItem}><Text style={styles.sideItemText}>▤  Возможности</Text></Pressable></Link>
             <View style={styles.sideItem}><Text style={styles.sideItemText}>⚙  Настройки</Text></View>
             <View style={styles.sideBottom}>
               <View style={styles.sideStatusDot} />
