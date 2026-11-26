@@ -44,7 +44,11 @@ export default function HomeScreen() {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) setMessages(parsed);
       }
-      setEngineStatus(('gpu' in navigator) ? 'idle' : 'unsupported');
+      setEngineStatus(Boolean((navigator as any).gpu) ? 'idle' : 'unsupported');
+      if ('serviceWorker' in navigator) {
+        const base = window.location.pathname.includes('/OFFLINE-AI') ? '/OFFLINE-AI/' : '/';
+        navigator.serviceWorker.register(base + 'sw.js').catch(() => {});
+      }
     } catch {
       setEngineStatus('idle');
     }
