@@ -1,4 +1,4 @@
-import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm";
+import { CreateMLCEngine } from "https://esm.run/@mlc-ai/web-llm@0.2.83";
 
 const MODEL_ID = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
 let enginePromise = null;
