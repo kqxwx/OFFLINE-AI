@@ -37,7 +37,7 @@ export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps
 export function CustomTabList(props: TabListProps) {
   const { width } = useWindowDimensions();
   return (
-    <View {...props} style={[styles.tabListContainer, width >= 900 && styles.desktopHidden]}>
+    <View {...props} style={[styles.tabListContainer, styles.hiddenNavigation, width >= 900 && styles.desktopHidden]}>
       <View style={styles.innerContainer}>
         <View style={styles.brandMark}><Text style={styles.brandGlyph}>✳</Text></View>
         <Text style={styles.brandText}>OFFLINE AI</Text>
@@ -49,6 +49,7 @@ export function CustomTabList(props: TabListProps) {
 
 const styles = StyleSheet.create({
   desktopHidden: { display: 'none' },
+  hiddenNavigation: { display: 'none' },
   tabListContainer: {
     position: 'absolute',
     bottom: 12,
