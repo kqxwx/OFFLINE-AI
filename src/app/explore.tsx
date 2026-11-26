@@ -1,180 +1,103 @@
-import { Image } from 'expo-image';
-import { SymbolView } from 'expo-symbols';
-import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Link } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ExternalLink } from '@/components/external-link';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Collapsible } from '@/components/ui/collapsible';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+const tools = [
+  { icon: '✧', title: 'Умный чат', detail: 'Диалог с локальной языковой моделью', state: 'В РАЗРАБОТКЕ' },
+  { icon: '⌘', title: 'Письмо и идеи', detail: 'Тексты, сценарии, мозговой штурм', state: 'В ПЛАНАХ' },
+  { icon: '▤', title: 'Документы', detail: 'Краткое содержание и разбор файлов', state: 'В ПЛАНАХ' },
+  { icon: '◉', title: 'Голосовой режим', detail: 'Распознавание речи и озвучка ответов', state: 'В ПЛАНАХ' },
+  { icon: '◇', title: 'Личная память', detail: 'Заметки и контекст, хранящиеся на устройстве', state: 'В ПЛАНАХ' },
+  { icon: '⌁', title: 'Офлайн-инструменты', detail: 'Перевод, объяснения, планы и заметки', state: 'В ПЛАНАХ' },
+];
 
-export default function TabTwoScreen() {
-  const safeAreaInsets = useSafeAreaInsets();
-  const insets = {
-    ...safeAreaInsets,
-    bottom: safeAreaInsets.bottom + BottomTabInset + Spacing.three,
-  };
-  const theme = useTheme();
-
-  const contentPlatformStyle = Platform.select({
-    android: {
-      paddingTop: insets.top,
-      paddingLeft: insets.left,
-      paddingRight: insets.right,
-      paddingBottom: insets.bottom,
-    },
-    web: {
-      paddingTop: Spacing.six,
-      paddingBottom: Spacing.four,
-    },
-  });
-
+export default function ExploreScreen() {
   return (
-    <ScrollView
-      style={[styles.scrollView, { backgroundColor: theme.background }]}
-      contentInset={insets}
-      contentContainerStyle={[styles.contentContainer, contentPlatformStyle]}>
-      <ThemedView style={styles.container}>
-        <ThemedView style={styles.titleContainer}>
-          <ThemedText type="subtitle">Explore</ThemedText>
-          <ThemedText style={styles.centerText} themeColor="textSecondary">
-            This starter app includes example{'\n'}code to help you get started.
-          </ThemedText>
+    <SafeAreaView style={styles.safe}>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <Text style={styles.eyebrow}>ТВОЯ ПЕРСОНАЛЬНАЯ AI-СТУДИЯ</Text>
+          <Text style={styles.title}>Возможности</Text>
+          <Text style={styles.subtitle}>Один помощник для идей, знаний и повседневных задач. Всё задумано для работы непосредственно на iPhone.</Text>
+        </View>
 
-          <ExternalLink href="https://docs.expo.dev" asChild>
-            <Pressable style={({ pressed }) => pressed && styles.pressed}>
-              <ThemedView type="backgroundElement" style={styles.linkButton}>
-                <ThemedText type="link">Expo documentation</ThemedText>
-                <SymbolView
-                  tintColor={theme.text}
-                  name={{ ios: 'arrow.up.right.square', android: 'link', web: 'link' }}
-                  size={12}
-                />
-              </ThemedView>
-            </Pressable>
-          </ExternalLink>
-        </ThemedView>
+        <View style={styles.featureHero}>
+          <View style={styles.heroIcon}><Text style={styles.heroGlyph}>✳</Text></View>
+          <View style={styles.heroCopy}>
+            <Text style={styles.heroKicker}>ГЛАВНАЯ ЦЕЛЬ</Text>
+            <Text style={styles.heroTitle}>ИИ без облака</Text>
+            <Text style={styles.heroText}>Локальная модель, приватная память и голосовой интерфейс — без обязательной подписки.</Text>
+          </View>
+          <View style={styles.heroOrb} />
+        </View>
 
-        <ThemedView style={styles.sectionsWrapper}>
-          <Collapsible title="File-based routing">
-            <ThemedText type="small">
-              This app has two screens: <ThemedText type="code">src/app/index.tsx</ThemedText> and{' '}
-              <ThemedText type="code">src/app/explore.tsx</ThemedText>
-            </ThemedText>
-            <ThemedText type="small">
-              The layout file in <ThemedText type="code">src/app/_layout.tsx</ThemedText> sets up
-              the tab navigator.
-            </ThemedText>
-            <ExternalLink href="https://docs.expo.dev/router/introduction">
-              <ThemedText type="linkPrimary">Learn more</ThemedText>
-            </ExternalLink>
-          </Collapsible>
+        <View style={styles.sectionHeading}>
+          <Text style={styles.sectionTitle}>ИНСТРУМЕНТЫ</Text>
+          <Text style={styles.sectionMeta}>06 МОДУЛЕЙ</Text>
+        </View>
 
-          <Collapsible title="Android, iOS, and web support">
-            <ThemedView type="backgroundElement" style={styles.collapsibleContent}>
-              <ThemedText type="small">
-                You can open this project on Android, iOS, and the web. To open the web version,
-                press <ThemedText type="smallBold">w</ThemedText> in the terminal running this
-                project.
-              </ThemedText>
-              <Image
-                source={require('@/assets/images/tutorial-web.png')}
-                style={styles.imageTutorial}
-              />
-            </ThemedView>
-          </Collapsible>
+        <View style={styles.toolList}>
+          {tools.map((tool, index) => (
+            <View key={tool.title} style={styles.toolCard}>
+              <View style={styles.toolIcon}><Text style={styles.toolGlyph}>{tool.icon}</Text></View>
+              <View style={styles.toolCopy}>
+                <Text style={styles.toolTitle}>{tool.title}</Text>
+                <Text style={styles.toolDetail}>{tool.detail}</Text>
+                <Text style={styles.toolState}>{tool.state}</Text>
+              </View>
+              <Text style={styles.toolIndex}>0{index + 1}</Text>
+            </View>
+          ))}
+        </View>
 
-          <Collapsible title="Images">
-            <ThemedText type="small">
-              For static images, you can use the <ThemedText type="code">@2x</ThemedText> and{' '}
-              <ThemedText type="code">@3x</ThemedText> suffixes to provide files for different
-              screen densities.
-            </ThemedText>
-            <Image source={require('@/assets/images/react-logo.png')} style={styles.imageReact} />
-            <ExternalLink href="https://reactnative.dev/docs/images">
-              <ThemedText type="linkPrimary">Learn more</ThemedText>
-            </ExternalLink>
-          </Collapsible>
+        <View style={styles.privacyCard}>
+          <Text style={styles.privacyEyebrow}>ПРИНЦИП ПРОЕКТА</Text>
+          <Text style={styles.privacyTitle}>Твои данные — у тебя.</Text>
+          <Text style={styles.privacyText}>Перед запуском каждой функции проверим, что она действительно работает локально. Не будем выдавать облачную обработку за офлайн.</Text>
+        </View>
 
-          <Collapsible title="Light and dark mode components">
-            <ThemedText type="small">
-              This template has light and dark mode support. The{' '}
-              <ThemedText type="code">useColorScheme()</ThemedText> hook lets you inspect what the
-              user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-            </ThemedText>
-            <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-              <ThemedText type="linkPrimary">Learn more</ThemedText>
-            </ExternalLink>
-          </Collapsible>
-
-          <Collapsible title="Animations">
-            <ThemedText type="small">
-              This template includes an example of an animated component. The{' '}
-              <ThemedText type="code">src/components/ui/collapsible.tsx</ThemedText> component uses
-              the powerful <ThemedText type="code">react-native-reanimated</ThemedText> library to
-              animate opening this hint.
-            </ThemedText>
-          </Collapsible>
-        </ThemedView>
-        {Platform.OS === 'web' && <WebBadge />}
-      </ThemedView>
-    </ScrollView>
+        <Link href="/" asChild>
+          <Pressable style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}>
+            <Text style={styles.backButtonText}>← Вернуться к чату</Text>
+          </Pressable>
+        </Link>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  container: {
-    maxWidth: MaxContentWidth,
-    flexGrow: 1,
-  },
-  titleContainer: {
-    gap: Spacing.three,
-    alignItems: 'center',
-    paddingHorizontal: Spacing.four,
-    paddingVertical: Spacing.six,
-  },
-  centerText: {
-    textAlign: 'center',
-  },
-  pressed: {
-    opacity: 0.7,
-  },
-  linkButton: {
-    flexDirection: 'row',
-    paddingHorizontal: Spacing.four,
-    paddingVertical: Spacing.two,
-    borderRadius: Spacing.five,
-    justifyContent: 'center',
-    gap: Spacing.one,
-    alignItems: 'center',
-  },
-  sectionsWrapper: {
-    gap: Spacing.five,
-    paddingHorizontal: Spacing.four,
-    paddingTop: Spacing.three,
-  },
-  collapsibleContent: {
-    alignItems: 'center',
-  },
-  imageTutorial: {
-    width: '100%',
-    aspectRatio: 296 / 171,
-    borderRadius: Spacing.three,
-    marginTop: Spacing.two,
-  },
-  imageReact: {
-    width: 100,
-    height: 100,
-    alignSelf: 'center',
-  },
+  safe: { flex: 1, backgroundColor: '#080811' },
+  content: { width: '100%', maxWidth: 780, alignSelf: 'center', paddingHorizontal: 22, paddingTop: 26, paddingBottom: 118 },
+  header: { marginBottom: 22 },
+  eyebrow: { color: '#A99BCF', fontSize: 8, letterSpacing: 2.4, fontWeight: '700', marginBottom: 9 },
+  title: { color: '#F5F1FF', fontSize: 31, lineHeight: 37, fontWeight: '800', letterSpacing: -0.8 },
+  subtitle: { color: '#9691A8', fontSize: 12, lineHeight: 19, marginTop: 8, maxWidth: 460 },
+  featureHero: { minHeight: 145, backgroundColor: '#1B1730', borderRadius: 21, borderWidth: 1, borderColor: '#4A3B70', padding: 17, flexDirection: 'row', alignItems: 'center', overflow: 'hidden', marginBottom: 27 },
+  heroIcon: { width: 48, height: 48, borderRadius: 16, backgroundColor: '#49366F', borderWidth: 1, borderColor: '#8A70C7', alignItems: 'center', justifyContent: 'center', marginRight: 14 },
+  heroGlyph: { color: '#E4D9FF', fontSize: 28 },
+  heroCopy: { flex: 1, zIndex: 1 },
+  heroKicker: { color: '#B5A1E9', fontSize: 8, letterSpacing: 1.8, fontWeight: '700' },
+  heroTitle: { color: '#F4EFFF', fontSize: 19, fontWeight: '700', marginTop: 4 },
+  heroText: { color: '#B1A9C5', fontSize: 10, lineHeight: 15, marginTop: 5, maxWidth: 330 },
+  heroOrb: { position: 'absolute', width: 150, height: 150, borderRadius: 75, right: -55, top: -55, backgroundColor: '#6A4AA8', opacity: 0.22 },
+  sectionHeading: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 11 },
+  sectionTitle: { color: '#918AA8', fontSize: 9, letterSpacing: 1.8, fontWeight: '700' },
+  sectionMeta: { color: '#6D6680', fontSize: 8, letterSpacing: 1.4 },
+  toolList: { gap: 9 },
+  toolCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#151421', borderWidth: 1, borderColor: '#2C293D', borderRadius: 16, padding: 13 },
+  toolIcon: { width: 40, height: 40, borderRadius: 13, backgroundColor: '#29223F', alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  toolGlyph: { color: '#C6B3FF', fontSize: 21 },
+  toolCopy: { flex: 1 },
+  toolTitle: { color: '#EAE5F4', fontSize: 12, fontWeight: '700' },
+  toolDetail: { color: '#918BA2', fontSize: 9, marginTop: 4 },
+  toolState: { color: '#B39BEF', fontSize: 7, fontWeight: '700', letterSpacing: 1.1, marginTop: 7 },
+  toolIndex: { color: '#554E67', fontSize: 9, letterSpacing: 1 },
+  privacyCard: { marginTop: 18, padding: 16, borderRadius: 17, backgroundColor: '#11191A', borderWidth: 1, borderColor: '#293938' },
+  privacyEyebrow: { color: '#8EB59D', fontSize: 8, letterSpacing: 1.8, fontWeight: '700' },
+  privacyTitle: { color: '#DCEBE0', fontSize: 16, fontWeight: '700', marginTop: 7 },
+  privacyText: { color: '#91A199', fontSize: 10, lineHeight: 16, marginTop: 6 },
+  backButton: { alignSelf: 'flex-start', marginTop: 20, paddingHorizontal: 16, paddingVertical: 12, borderRadius: 13, backgroundColor: '#28213F', borderWidth: 1, borderColor: '#51416F' },
+  backButtonText: { color: '#D8C9FF', fontSize: 11, fontWeight: '700' },
+  pressed: { opacity: 0.72 },
 });
