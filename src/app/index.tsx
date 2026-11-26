@@ -248,7 +248,7 @@ export default function HomeScreen() {
               <View style={styles.settingIcon}><Text style={styles.settingIconText}>◉</Text></View>
               <View style={styles.settingCopy}>
                 <Text style={styles.settingName}>Подключение к интернету</Text>
-                <Text style={styles.settingValue}>Не требуется для интерфейса</Text>
+                <Text style={styles.settingValue}>Пока не используются</Text>
               </View>
               <View style={styles.settingBadge}><Text style={styles.settingBadgeText}>OFF</Text></View>
             </View>
