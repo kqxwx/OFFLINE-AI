@@ -5,7 +5,7 @@ export default function AppTabs() {
     <NativeTabs
       backgroundColor="#0D0C16"
       indicatorColor="#30264C"
-      labelStyle={{ selected: { color: '#E6DEFF' }, default: { color: '#8D879E' } }}>
+      labelStyle={{ selected: { color: '#E6DEFF' } }}>
       <NativeTabs.Trigger name="index">
         <NativeTabs.Trigger.Label>Чат</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
