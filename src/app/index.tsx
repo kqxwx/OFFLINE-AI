@@ -27,8 +27,36 @@ export default function HomeScreen() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mode, setMode] = useState<'balanced' | 'deep'>('balanced');
+  const [historyReady, setHistoryReady] = useState(false);
   const pulse = useRef(new Animated.Value(0)).current;
   const breathe = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (Platform.OS !== 'web') {
+      setHistoryReady(true);
+      return;
+    }
+    try {
+      const saved = window.localStorage.getItem('offlineai.chat.v1');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) setMessages(parsed);
+      }
+    } catch {
+      // Ignore unavailable or malformed local history.
+    } finally {
+      setHistoryReady(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (Platform.OS !== 'web' || !historyReady) return;
+    try {
+      window.localStorage.setItem('offlineai.chat.v1', JSON.stringify(messages));
+    } catch {
+      // The app remains usable if browser storage is unavailable.
+    }
+  }, [messages, historyReady]);
 
   useEffect(() => {
     const native = Platform.OS !== 'web';
@@ -147,7 +175,7 @@ export default function HomeScreen() {
             </View>
           ) : (
             <View style={styles.messages}>
-              <Text style={styles.chatDate}>НОВЫЙ ДИАЛОГ · ТОЛЬКО ЭТОТ СЕАНС</Text>
+              <Text style={styles.chatDate}>{Platform.OS === 'web' ? 'ИСТОРИЯ СОХРАНЯЕТСЯ ЛОКАЛЬНО' : 'ДИАЛОГ ЭТОГО СЕАНСА'}</Text>
               {messages.map(message => (
                 <View key={message.id} style={[styles.messageRow, message.role === 'user' ? styles.userRow : styles.assistantRow]}>
                   {message.role === 'assistant' && <View style={styles.miniMark}><Text style={styles.miniMarkText}>✳</Text></View>}
@@ -240,6 +268,19 @@ export default function HomeScreen() {
               </View>
               <View style={[styles.settingBadge, styles.badgePending]}><Text style={[styles.settingBadgeText, styles.pendingText]}>SOON</Text></View>
             </View>
+            <View style={styles.settingItem}>
+              <View style={styles.settingIcon}><Text style={styles.settingIconText}>⌁</Text></View>
+              <View style={styles.settingCopy}>
+                <Text style={styles.settingName}>Голосовой режим</Text>
+                <Text style={styles.settingValue}>Микрофон и озвучка ещё не подключены</Text>
+              </View>
+              <View style={[styles.settingBadge, styles.badgePending]}><Text style={[styles.settingBadgeText, styles.pendingText]}>SOON</Text></View>
+            </View>
+            {Platform.OS === 'web' && (
+              <Pressable onPress={() => { setMessages([]); setSettingsOpen(false); }} style={styles.clearHistoryButton}>
+                <Text style={styles.clearHistoryText}>Очистить локальную историю</Text>
+              </Pressable>
+            )}
             <Text style={styles.sheetFootnote}>Мы не показываем фиктивный статус готовности: функции появятся после подключения и проверки на iPhone.</Text>
           </Pressable>
         </Pressable>
@@ -344,5 +385,7 @@ const styles = StyleSheet.create({
   settingBadgeText: { color: '#9BD0AC', fontSize: 8, fontWeight: '800', letterSpacing: 1 },
   badgePending: { backgroundColor: '#302A42' },
   pendingText: { color: '#B7A6E9' },
-  sheetFootnote: { color: '#777287', fontSize: 9, lineHeight: 15, marginTop: 16 },
+  clearHistoryButton: { alignSelf: 'flex-start', paddingVertical: 12, marginTop: 8 },
+  clearHistoryText: { color: '#D69A9A', fontSize: 10, fontWeight: '600' },
+  sheetFootnote: { color: '#777287', fontSize: 9, lineHeight: 15, marginTop: 8 },
 });
