@@ -6,7 +6,7 @@ import {
   TabTriggerSlotProps,
   TabListProps,
 } from 'expo-router/ui';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 export default function AppTabs() {
   return (
@@ -36,7 +36,7 @@ export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps
 
 export function CustomTabList(props: TabListProps) {
   return (
-    <View {...props} style={styles.tabListContainer}>
+    <View {...props} style={[styles.tabListContainer, width >= 900 && styles.desktopHidden]}>
       <View style={styles.innerContainer}>
         <View style={styles.brandMark}><Text style={styles.brandGlyph}>✳</Text></View>
         <Text style={styles.brandText}>OFFLINE AI</Text>
@@ -47,7 +47,7 @@ export function CustomTabList(props: TabListProps) {
 }
 
 const styles = StyleSheet.create({
-  tabListContainer: {
+  desktopHidden: { display: 'none' },\n  tabListContainer: {
     position: 'absolute',
     bottom: 12,
     left: 0,
