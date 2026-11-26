@@ -47,7 +47,8 @@ export function CustomTabList(props: TabListProps) {
 }
 
 const styles = StyleSheet.create({
-  desktopHidden: { display: 'none' },\n  tabListContainer: {
+  desktopHidden: { display: 'none' },
+  tabListContainer: {
     position: 'absolute',
     bottom: 12,
     left: 0,
