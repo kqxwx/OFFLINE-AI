@@ -35,6 +35,7 @@ export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps
 }
 
 export function CustomTabList(props: TabListProps) {
+  const { width } = useWindowDimensions();
   return (
     <View {...props} style={[styles.tabListContainer, width >= 900 && styles.desktopHidden]}>
       <View style={styles.innerContainer}>
